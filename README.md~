@@ -50,7 +50,7 @@ raster2pgsql -I -C -Y -t 1x1 -s 4326 <full_path_of_DEM_raster_image> kn_dem_clip
 
 12. To calculate the angle (in radians) an splitted section is making at Earth's center, in order to use in Cosine Formula, use "earth_center_angle.py" Python code.
 
-13. Finally run the "cosine_rule.py" Python code to calculate the lengths of all the splitted line features.
+13. 
 
 
 
