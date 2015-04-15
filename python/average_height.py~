@@ -2,7 +2,7 @@ import psycopg2
 import osgeo.ogr
 connection = psycopg2.connect("host='localhost' dbname='<database_name>' user='<postgres_user>' password='<postgres_password>'")
 cursor1 = connection.cursor()
-cursor1.execute('select count(*) from <mesh_table_name>')
+cursor1.execute('select count(*) from dem')
 for y in cursor1:
     len1 = y[0]
 for i in range(len1):

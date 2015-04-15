@@ -1,0 +1,27 @@
+import psycopg2
+import osgeo.ogr
+connection = psycopg2.connect("host='localhost' dbname='pap_test' user='postgres' password='zia123'")
+cursor1 = connection.cursor()
+cursor2 = connection.cursor()
+cursor1.execute('alter table ways add column length_new double precision;alter table ways add column reverse_cost_new double precision;')
+connection.commit()
+cursor1.execute('update ways set length_new = length_new from ways_new where ways.the_geom = ways_new.the_geom')
+connection.commit()
+cursor1.execute('select reverse_cost from ways')
+for i in cursor1:
+    if i[0]>10:
+	cursor2.execute('update ways set reverse_cost_new = 1000*length_new from ways_new where ways.the_geom = ways_new.the_geom')
+    else:
+	cursor2.execute('update ways set reverse_cost_new = length_new from ways_new where ways.the_geom = ways_new.the_geom')
+
+
+for i in cursor1:
+    count = i[0]
+for x in range(count):
+    cursor1.execute("select length_w_dem from ways_new_split where z_id = (%s+1)", [x])
+    length = 0
+    for y in cursor1:
+	length+=y[0]
+    cursor2.execute('update ways_new set length_new = %s where z_id = (%s+1)',  [length, x])
+    print 'executed %s' % x
+connection.commit()

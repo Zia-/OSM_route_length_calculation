@@ -1,7 +1,6 @@
 create table ways_new ();
 select addgeometrycolumn('ways_new', 'the_geom', 4326, 'LINESTRING', 2);
 alter table ways_new add column length double precision;
-alter table ways_new add column length_new double precision;
 insert into ways_new (the_geom, length) select the_geom, length from ways;
 create index the_geom_idx1 on ways_new using gist(the_geom);
 alter table ways_new add column z_id BIGSERIAL;

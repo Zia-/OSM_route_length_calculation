@@ -6,7 +6,7 @@ cursor1.execute('select count(*) from ways_new_split')
 for i in cursor1:
     count = i[0]
 for x in range(count):
-    cursor1.execute('select val, st_distance(st_transform(n.the_geom_st_pt, 3857), st_transform(r.the_geom_st_centroid, 3857))'+
+    cursor1.execute('select avg_height, st_distance(st_transform(n.the_geom_st_pt, 3857), st_transform(r.the_geom_st_centroid, 3857))'+
                     'from dem r, ways_new_split n where n_id=(%s+1)'+
                     'order by st_distance(n.the_geom_st_pt, r.the_geom_st_centroid) ASC limit 2', [x])
     numerator=0
@@ -16,7 +16,7 @@ for x in range(count):
         denomenator+= (1/(s[1])**1)
     height_avg = numerator/denomenator
     cursor1.execute('update ways_new_split set height_st_pt = %s where n_id=(%s+1)', [height_avg, x])
-    cursor1.execute('select val, st_distance(st_transform(n.the_geom_end_pt, 3857), st_transform(r.the_geom_st_centroid, 3857))'+
+    cursor1.execute('select avg_height, st_distance(st_transform(n.the_geom_end_pt, 3857), st_transform(r.the_geom_st_centroid, 3857))'+
                     'from dem r, ways_new_split n where n_id=(%s+1)'+
                     'order by st_distance(n.the_geom_end_pt, r.the_geom_st_centroid) ASC limit 2', [x])
     numerator=0

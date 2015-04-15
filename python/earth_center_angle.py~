@@ -1,14 +1,14 @@
 import psycopg2
 import osgeo.ogr
 import math
-connection = psycopg2.connect("host='localhost' dbname='<database_name>' user='<postgres_user>' password='<postgres_password>'")
+connection = psycopg2.connect("host='<localhost>' dbname='<database_name>' user='<postgres_user>' password='<postgres_password>'")
 cursor1 = connection.cursor()
 cursor2 = connection.cursor()
-cursor1.execute('select count(*) from ways_new_split')
+cursor1.execute('select count(*) from kn_ways_new_split')
 for i in cursor1:
     count = i[0]
 for x in range(count):
-    cursor1.execute('select long_st_pt, lat_st_pt, long_end_pt, lat_end_pt from ways_new_split where n_id=(%s+1)', [x])
+    cursor1.execute('select long_st_pt, lat_st_pt, long_end_pt, lat_end_pt from kn_ways_new_split where n_id=(%s+1)', [x])
     for y in cursor1:
         long1 = y[0]
         lat1 = y[1]
@@ -22,6 +22,6 @@ for x in range(count):
         dlong = rlong2 - rlong1
         a = math.sin(dlat/2)**2 + math.cos(rlat1)*math.cos(rlat2)*math.sin(dlong/2)**2
         c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
-        cursor2.execute('update ways_new_split set angle_earth_center = %s where n_id=(%s+1)', [c, x])
+        cursor2.execute('update kn_ways_new_split set angle_earth_center = %s where n_id=(%s+1)', [c, x])
         print 'executed %s' % (x+1)
 connection.commit()

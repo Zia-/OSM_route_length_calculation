@@ -3,10 +3,6 @@ update dem set the_geom_st_centroid = st_centroid(the_geom_st_envelope);
 create index the_geom_st_centroid_idx on dem using gist(the_geom_st_centroid);
 alter table dem add column val double precision;
 update dem set val = x.val from (select val, rid from (select (ST_PixelAsCentroids(rast)).*, rid from dem) as foo) as x where dem.rid = x.rid
---create table dem_pixelascentroid as
---select val, geom as the_geom from (select (ST_PixelAsCentroids(rast)).* from dem) foo;
---create index the_geom_idx on dem_pixelascentroid using gist(the_geom);
---alter table ways_new_split add column avg_height double precision;
 alter table ways_new_split add column angle_earth_center double precision;
 alter table ways_new_split add column length_w_dem double precision;
 alter table ways_new_split add column the_geom_st_pt geometry;
