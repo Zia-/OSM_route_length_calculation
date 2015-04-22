@@ -28,19 +28,19 @@ http://overpass.osm.rambler.ru/cgi/xapi_meta?*[bbox=xmin,ymin,xmax,ymax]
 
 3- Run the "extensions.sql" SQL code in pgAdmin3 SQL Editor in order to create the PostGIS and pgRouting extensions for our newly created database.
 
-4- Import the downloaded OSM XML file into our newly created db using "osm2pgrouting" tool from Terminal. Here variables are <full_path_of_osm_xml_file>, <database_name>, <postgres_user> and <postgres_password>, if one has installed the database under normal setup on a local machine.
+4- Import the downloaded OSM XML file into our newly created db using "osm2pgrouting" tool from Terminal. Here variables are 'full_path_of_osm_xml_file', 'database_name', 'postgres_user' and 'postgres_password', if one has installed the database under normal setup on a local machine.
 
-osm2pgrouting -file <full_path_of_osm_xml_file> -conf /usr/share/osm2pgrouting/mapconfig.xml -host localhost -port 5432 -dbname <database_name> -user <postgres_user> -passwd <postgres_password> -clean
+osm2pgrouting -file 'full_path_of_osm_xml_file' -conf /usr/share/osm2pgrouting/mapconfig.xml -host localhost -port 5432 -dbname <database_name> -user 'postgres_user' -passwd 'postgres_password' -clean
 
-5- Import DEM raster file using "raster2pgsql" programe from Terminal. Here varaibles are <full_path_of_DEM_raster_image>, <postgres_user> and <database_name>. Depending upon the extent and resolution of used DEM, its gonna take a while to create dem table inside the database.
+5- Import DEM raster file using "raster2pgsql" programe from Terminal. Here varaibles are 'full_path_of_DEM_raster_image', 'postgres_user' and 'database_name'. Depending upon the extent and resolution of used DEM, its gonna take a while to create dem table inside the database.
 
-raster2pgsql -I -C -Y -t 1x1 -s 4326 <full_path_of_DEM_raster_image> dem | psql -h localhost -p 5432 -U <postgres_user> -d <database_name>
+raster2pgsql -I -C -Y -t 1x1 -s 4326 'full_path_of_DEM_raster_image' dem | psql -h localhost -p 5432 -U <postgres_user> -d 'database_name'
 
 6- Create some initial tables which will hold the splitted roads by running "table.sql".
 
 7- Create mesh table of desired resolution and extent using OSM_route_splitting_mesh repository (https://github.com/Zia-/OSM_route_splitting_mesh). 
 
-8- Now split the imported line features from OSM XML data, using mesh table, by running the "split.py" python script. Use the newly created mesh table at line 11 (variable <mesh_table_name>).
+8- Now split the imported line features from OSM XML data, using mesh table, by running the "split.py" python script. Use the newly created mesh table at line 11 (variable 'mesh_table_name').
 
 9- Run the "alter.sql" SQL code to calculate the centroid points of the used DEM.
 
